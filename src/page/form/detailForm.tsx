@@ -81,34 +81,33 @@ const DetailForm: React.FC = () => {
         <Typography variant="h6" sx={{ m: 1 }}>
           Detail
         </Typography>
-        {id && (
-          <Box display="flex" alignItems="center" gap={1}>
-            <Typography variant="body2">Form link:</Typography>
-            <Typography
-              variant="body2"
-              sx={{ wordBreak: "break-all", color: "primary.main" }}
-            >
-              {formLink}
-            </Typography>
-            <Tooltip title={copied ? "Copied!" : "Copy"}>
-              <IconButton
-                onClick={() => {
-                  navigator.clipboard.writeText(formLink);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-                size="small"
-              >
-                <ContentCopyIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        <Button variant="contained" color="warning" sx={{ m: 1 }} onClick={() => navigate("/forms")}>
+              <Button variant="contained" color="warning" sx={{ m: 1 }} onClick={() => navigate("/forms")}>
           Back
         </Button>
       </Box>
-
+      {id && (
+        <Box display="flex" alignItems="center" gap={1} sx={{ m: 1 }}>
+          <Typography variant="body2">Form link:</Typography>
+          <Typography
+            variant="body2"
+            sx={{ wordBreak: "break-all", color: "primary.main" }}
+          >
+            {formLink}
+          </Typography>
+          <Tooltip title={copied ? "Copied!" : "Copy"}>
+            <IconButton
+              onClick={() => {
+                navigator.clipboard.writeText(formLink);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              size="small"
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
       {selectedForm && (
           <Box sx={{ p: 2, backgroundColor: "#f9f9f9", borderRadius: 2, mb: 2 }}>
             <Typography variant="h6" gutterBottom>Form Information</Typography>
