@@ -1,6 +1,6 @@
 // store/userSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createQuestionApi, createUserApi, getFormByIdApi, getUserApi } from "../services/userService";
+import { createQuestionApi, createUserApi, deleteQuestionApi, getFormByIdApi, getUserApi } from "../services/userService";
 import { choiceTypes } from "../constants/form";
 
 export interface UserFormData {
@@ -114,6 +114,24 @@ export const createQuestionAsync = createAsyncThunk(
     }
   }
 );
+export const deleteQuestionAsync = createAsyncThunk(
+  "user/delete/id",
+  async ({
+      id,
+      formSlug,
+    }: {id: number, formSlug: string }, { rejectWithValue }) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("user") || "{}").accessToken || "";
+      const data = await deleteQuestionApi(id, token, formSlug);
+      return data;
+    } catch (error: any) {
+      return rejectWithValue({
+        message: "Failed to fetch forms.",
+        code: error?.response?.status || 500,
+      });
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -166,6 +184,26 @@ const userSlice = createSlice({
         state.selectedForm = action.payload; // simpan ke selectedForm
       })
       .addCase(getFormByIdAsync.rejected, (state, action: any) => {
+        console.log(" action.payload.code",  action.payload.code)
+        state.loading = false;
+        state.errorMessage = action.payload.message || "Failed to fetch form.";
+        state.errorCode = action.payload?.code;
+      });
+
+    builder
+      .addCase(deleteQuestionAsync.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+        state.successMessage = null;
+        state.fieldErrors = {};
+        state.selectedForm = null;
+        state.errorCode =0
+      })
+      .addCase(deleteQuestionAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = action.payload.message;
+      })
+      .addCase(deleteQuestionAsync.rejected, (state, action: any) => {
         console.log(" action.payload.code",  action.payload.code)
         state.loading = false;
         state.errorMessage = action.payload.message || "Failed to fetch form.";

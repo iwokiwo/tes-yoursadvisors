@@ -24,6 +24,7 @@ export interface CreateQuestionPayload {
   choice_type: (typeof choiceTypes)[number];
   is_required: boolean;
   choices?: any;
+   id?: string;
 }
 
 export const createUserApi = async (
@@ -49,7 +50,7 @@ export const createQuestionApi = async (
   formSlug: string
 ) => {
   const response = await axios.post(
-    `${baseUrl}/api/v1/forms/<form_slug>/questions`,
+    `${baseUrl}/api/v1/forms/${formSlug}/questions`,
     payload,
     {
       headers: {
@@ -60,6 +61,24 @@ export const createQuestionApi = async (
 
   return response.data;
 };
+
+export const deleteQuestionApi = async (
+  id: number,
+  token: string,
+  formSlug: string
+) => {
+  const response = await axios.delete(
+    `${baseUrl}/api/v1/forms/${formSlug}/questions/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
 
 export const getUserApi = async (token: string, id?: string): Promise<UserData[]> => {
     const url = id

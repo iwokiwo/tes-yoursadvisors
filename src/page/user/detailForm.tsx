@@ -1,26 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getFormByIdAsync, setSelectedForm } from "../../store/userSlice";
+import { getFormByIdAsync } from "../../store/userSlice";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Typography,
-  CircularProgress,
-  Alert,
   Button,
   Box,
   Tabs,
   Tab,
 } from "@mui/material";
-import { UserData } from "../../services/userService";
 import { useNavigate, useParams } from "react-router-dom";
-import AddQuestionForm from "./addQuestionForm";
 import QuestionList from "./questionList";
 
 interface TabPanelProps {
@@ -54,7 +43,7 @@ const DetailForm: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedForm, errorCode} = useSelector((state: RootState) => state.user);
+  const { selectedForm, errorCode, successMessage} = useSelector((state: RootState) => state.user);
   const [value, setValue] = React.useState(0);
 
  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -65,8 +54,7 @@ const DetailForm: React.FC = () => {
      if (!id) return;
 
     dispatch(getFormByIdAsync({ formSlug: id })).unwrap()
-
-  }, [dispatch]);
+  }, [dispatch, successMessage]);
 
 
   if(errorCode > 200)  navigate("/forms")
@@ -77,7 +65,7 @@ const DetailForm: React.FC = () => {
         <Typography variant="h6" sx={{ m: 1 }}>
           Detail
         </Typography>
-        <Button variant="contained" sx={{ m: 1 }} onClick={() => navigate("/forms")}>
+        <Button variant="contained" color="warning" sx={{ m: 1 }} onClick={() => navigate("/forms")}>
           Back
         </Button>
       </Box>
@@ -102,8 +90,7 @@ const DetailForm: React.FC = () => {
         <Tab value={1} label="Response" />
       </Tabs>
       <TabPanel value={value} index={0} >
-        <AddQuestionForm formSlug={id!}/>
-        <QuestionList/>
+        <QuestionList formSlug={id!}/>
       </TabPanel>
       <TabPanel value={value} index={1} >
         Item Two

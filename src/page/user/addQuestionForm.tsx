@@ -21,11 +21,24 @@ import {
   Typography,
   Box,
   IconButton,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { choiceTypes, staticChoices } from "../../constants/form";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { createQuestionAsync } from "../../store/userSlice";
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  formSlug: string;
+}
 
 type ChoiceType = (typeof choiceTypes)[number];
 
@@ -46,11 +59,14 @@ const schema = yup.object().shape({
   is_required: yup.boolean().required(),
 });
 
-export default function AddQuestionForm({ formSlug }: { formSlug: string }) {
+const AddQuestionForm: React.FC<Props> = ({ open, onClose, formSlug }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -62,61 +78,26 @@ export default function AddQuestionForm({ formSlug }: { formSlug: string }) {
     resolver: yupResolver(schema),
   });
 
-  // const { fields, append, remove } = useFieldArray({
-  //   control,
-  //   name: "choices",
-  // });
-
   const choiceType = useWatch({
     control,
     name: "choice_type",
   });
 
-  const showChoices =
-    choiceType === "multiple choice" ||
-    choiceType === "dropdown" ||
-    choiceType === "checkboxes";
-
   const onSubmit = async (data: FormValues) => {
-    const payload = {
-      name: data.name,
-      choice_type: data.choice_type,
-      is_required: data.is_required,
-      choices: data.choices
-    };
-
-    console.log("Submitting:", payload);
-
-      //  dispatch(
-      //     createUserAsync({
-      //       data
-      //     })
-      //   );
-      //   reset();
-
-    // const response = await fetch(`/api/v1/forms/${formSlug}/questions`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer <accessToken>", // Replace with actual token
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
-
-    // if (!response.ok) {
-    //   const err = await response.json();
-    //   alert("Error: " + err.message);
-    // } else {
-    //   alert("Question submitted successfully");
-    // }
+    dispatch(
+      createQuestionAsync({
+        formData: data, formSlug
+      })
+    );
+    reset();
+    onClose()
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto" }}>
-      <Typography variant="h5" gutterBottom>
-        Add Question
-      </Typography>
-
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <DialogTitle>Add New Question</DialogTitle>
+      <DialogContent dividers>
+      <Box sx={{ maxWidth: 600, mx: "auto" }}>
       <form
         onSubmit={handleSubmit(onSubmit)} 
         noValidate>
@@ -254,12 +235,18 @@ export default function AddQuestionForm({ formSlug }: { formSlug: string }) {
             }}
           />
         </Box>
-        <Box mt={3}>
-          <Button type="submit" variant="contained" fullWidth>
+        <Box display="flex" justifyContent="space-between" mt={2}>
+          <Button variant="outlined" onClick={() => onClose()}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained">
             Submit Question
           </Button>
         </Box>
       </form>
     </Box>
+    </DialogContent>
+    </Dialog>
   );
 }
+export default AddQuestionForm
