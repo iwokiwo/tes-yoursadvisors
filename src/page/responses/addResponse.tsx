@@ -17,7 +17,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { questions } from "../../constants/form";
-import { createResponsesAsync } from "../../store/userSlice";
+import { createResponsesAsync } from "../../store/formSlice";
 import { AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
 

@@ -32,7 +32,7 @@ import * as yup from "yup";
 import { choiceTypes, staticChoices } from "../../constants/form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { createQuestionAsync } from "../../store/userSlice";
+import { createQuestionAsync } from "../../store/formSlice";
 
 interface Props {
   open: boolean;

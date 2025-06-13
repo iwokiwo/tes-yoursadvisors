@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { createUserAsync } from "../../store/userSlice";
+import { createFormAsync } from "../../store/formSlice";
 import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
@@ -57,7 +57,7 @@ const CreateForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     dispatch(
-      createUserAsync({
+      createFormAsync({
         ...data,
         allowed_domains: data.allowed_domains.split(",").map((d) => d.trim()),
       })

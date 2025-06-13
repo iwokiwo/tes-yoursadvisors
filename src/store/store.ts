@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import habitReducer from "./habit-slice";
 import authReducer from "./authSlice";
-import userReducer from "./userSlice";
+import userReducer from "./formSlice";
 
 const store = configureStore({
   reducer: {
-    habits: habitReducer,
     auth: authReducer,
     user: userReducer
   },

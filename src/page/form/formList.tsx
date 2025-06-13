@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getUseAsync, setSelectedForm } from "../../store/userSlice";
+import { getFormAsync, setSelectedForm } from "../../store/formSlice";
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { UserData } from "../../services/userService";
+import { UserData } from "../../services/formService";
 import { useNavigate } from "react-router-dom";
 
 const FormList: React.FC = () => {
@@ -26,7 +26,7 @@ const FormList: React.FC = () => {
   const [data, setData] = React.useState<UserData[]>([]);
 
   useEffect(() => {
-    dispatch(getUseAsync())
+    dispatch(getFormAsync())
       .unwrap()
       .then((data) => setData(data))
       .catch(() => { });

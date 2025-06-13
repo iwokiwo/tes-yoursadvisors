@@ -1,6 +1,6 @@
 // store/userSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createQuestionApi, createResponsesApi, createUserApi, deleteQuestionApi, getFormByIdApi, getResponseApi, getUserApi } from "../services/userService";
+import { createFormApi, createQuestionApi, createResponsesApi, deleteQuestionApi, getFormApi, getFormByIdApi, getResponseApi } from "../services/formService";
 import { choiceTypes } from "../constants/form";
 
 export interface UserFormData {
@@ -48,12 +48,12 @@ export interface CreateResponsesForm {
    answers: any[]
 }
 
-export const createUserAsync = createAsyncThunk(
+export const createFormAsync = createAsyncThunk(
   "user/createUser",
   async (formData: UserFormData, { rejectWithValue }) => {
     try {
        const token = JSON.parse(localStorage.getItem("user") || "{}").accessToken || "";
-      const response = await createUserApi(formData, token);
+      const response = await createFormApi(formData, token);
       return response.message;
     } catch (error: any) {
       if (error.response?.status === 422) {
@@ -66,12 +66,12 @@ export const createUserAsync = createAsyncThunk(
     }
   }
 );
-export const getUseAsync = createAsyncThunk(
+export const getFormAsync = createAsyncThunk(
   "user/getForms",
   async (_, { rejectWithValue }) => {
     try {
       const token = JSON.parse(localStorage.getItem("user") || "{}").accessToken || "";
-      const data = await getUserApi(token);
+      const data = await getFormApi(token);
       return data;
     } catch (error: any) {
       return rejectWithValue("Failed to fetch forms.");
@@ -198,18 +198,18 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createUserAsync.pending, (state) => {
+      .addCase(createFormAsync.pending, (state) => {
         state.loading = true;
         state.successMessage = null;
         state.errorMessage = null;
         state.fieldErrors = {};
         state.errorCode =0
       })
-      .addCase(createUserAsync.fulfilled, (state, action) => {
+      .addCase(createFormAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = action.payload;
       })
-      .addCase(createUserAsync.rejected, (state, action: any) => {
+      .addCase(createFormAsync.rejected, (state, action: any) => {
         state.loading = false;
         if (action.payload?.type === "fields") {
           state.fieldErrors = action.payload.errors;

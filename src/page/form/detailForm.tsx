@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getFormByIdAsync, getResponsesAsync } from "../../store/userSlice";
+import { getFormByIdAsync, getResponsesAsync } from "../../store/formSlice";
 import {
   Typography,
   Button,
@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import QuestionList from "../question/questionList";
-import ResponseList from "./responseList";
+import ResponseList from "../responses/responseList";
 
 interface TabPanelProps {
   children?: React.ReactNode;
