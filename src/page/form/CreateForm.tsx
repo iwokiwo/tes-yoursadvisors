@@ -36,7 +36,7 @@ type FormValues = {
 const CreateForm: React.FC = () => {
    const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { errorMessage, fieldErrors, successMessage, selectedForm } = useSelector(
+  const { errorMessage, fieldErrors, successMessage } = useSelector(
     (state: RootState) => state.user
   );
   const {

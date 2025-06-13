@@ -1,4 +1,4 @@
-import axios, { formToJSON } from "axios";
+import axios from "axios";
 import { baseUrl, choiceTypes } from "../constants/form";
 
 export interface CreateFormPayload {

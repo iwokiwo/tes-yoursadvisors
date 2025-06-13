@@ -1,15 +1,12 @@
 import React from "react";
 import {
   useForm,
-  useFieldArray,
   Controller
 } from "react-hook-form";
 import {
   TextField,
   Button,
-  Typography,
   Box,
-  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -80,9 +77,7 @@ const AddResponse: React.FC<Props> = ({ open, onClose, formSlug }) => {
                <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {questions.map((q, index) => (
               <Box key={q.question_id} mb={2}>
-                {/* Conditional Rendering Based on question_id */}
                 {q.question_id === 3 ? (
-                  // Date input
                   <Controller
                     name={`answers.${index}.value`}
                     control={control}
@@ -100,7 +95,6 @@ const AddResponse: React.FC<Props> = ({ open, onClose, formSlug }) => {
                     )}
                   />
                 ) : q.question_id === 4 ? (
-                  // Select input
                   <Controller
                     name={`answers.${index}.value`}
                     control={control}

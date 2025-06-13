@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { deleteQuestionAsync, setSelectedForm } from "../../store/formSlice";
+import { deleteQuestionAsync } from "../../store/formSlice";
 import {
   Table,
   TableBody,

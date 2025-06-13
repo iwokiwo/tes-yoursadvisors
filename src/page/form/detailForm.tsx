@@ -47,7 +47,7 @@ const DetailForm: React.FC = () => {
   const { selectedForm, errorCode, successMessage} = useSelector((state: RootState) => state.user);
   const [value, setValue] = React.useState(0);
 
- const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+ const handleChange = (_: unknown, newValue: number) => {
     setValue(newValue);
   };
 

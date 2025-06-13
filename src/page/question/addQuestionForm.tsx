@@ -2,7 +2,6 @@ import React from "react";
 import {
   useForm,
   Controller,
-  useFieldArray,
   useWatch,
 } from "react-hook-form";
 import {
@@ -17,21 +16,17 @@ import {
   InputLabel,
   FormGroup,
   FormControl,
-  FormHelperText,
   Typography,
   Box,
-  IconButton,
-  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
 } from "@mui/material";
-import { Add, Delete } from "@mui/icons-material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { choiceTypes, staticChoices } from "../../constants/form";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 import { createQuestionAsync } from "../../store/formSlice";
 
 interface Props {

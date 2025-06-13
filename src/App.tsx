@@ -11,13 +11,12 @@ import {
 import LoginForm from "./page/loginForm";
 import { RootState, AppDispatch } from "./store/store";
 import { logout } from "./store/authSlice";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import DetailForm from "./page/form/detailForm";
 import FormList from "./page/form/formList";
 import CreateForm from "./page/form/CreateForm";
 
 const App: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated

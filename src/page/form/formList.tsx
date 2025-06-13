@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getFormAsync, setSelectedForm } from "../../store/formSlice";
+import { getFormAsync } from "../../store/formSlice";
 import {
   Table,
   TableBody,

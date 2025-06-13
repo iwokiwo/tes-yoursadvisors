@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { deleteQuestionAsync, setSelectedForm } from "../../store/formSlice";
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import {
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -21,25 +19,9 @@ import AddResponse from "./addResponse";
 
 
 export default function ResponseList({ formSlug }: { formSlug: string }) {
-  const dispatch = useDispatch<AppDispatch>();
-  const { selectedForm, responses, loading, errorMessage, successMessage } = useSelector((state: RootState) => state.user);
+  const { responses, loading, errorMessage, successMessage } = useSelector((state: RootState) => state.user);
   const [openModal, setOpenModal] = React.useState(false);
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
-  const [questionToDelete, setQuestionToDelete] = React.useState<any>(null);
 
-  const handleDeleteClick = (question: any) => {
-    setQuestionToDelete(question)
-    setDeleteConfirmOpen(true);
-  };
-
-    const confirmDelete = () => {
-    if (questionToDelete) {
-      dispatch(deleteQuestionAsync({ id: questionToDelete.id, formSlug }));
-    }
-    setDeleteConfirmOpen(false);
-    setQuestionToDelete(null);
-  };
- console.log("responses", responses)
   return (
     <>
       <Box display="flex" justifyContent="space-between" mt={2}>
