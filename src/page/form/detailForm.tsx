@@ -8,10 +8,13 @@ import {
   Box,
   Tabs,
   Tab,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import QuestionList from "../question/questionList";
 import ResponseList from "../responses/responseList";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,6 +50,12 @@ const DetailForm: React.FC = () => {
   const { selectedForm, errorCode, successMessage} = useSelector((state: RootState) => state.user);
   const [value, setValue] = React.useState(0);
 
+  const [copied, setCopied] = React.useState(false);
+
+  const formLink = id
+    ? `${window.location.origin}/forms/detail/${id}`
+    : "";
+
  const handleChange = (_: unknown, newValue: number) => {
     setValue(newValue);
   };
@@ -72,6 +81,29 @@ const DetailForm: React.FC = () => {
         <Typography variant="h6" sx={{ m: 1 }}>
           Detail
         </Typography>
+        {id && (
+          <Box display="flex" alignItems="center" gap={1}>
+            <Typography variant="body2">Form link:</Typography>
+            <Typography
+              variant="body2"
+              sx={{ wordBreak: "break-all", color: "primary.main" }}
+            >
+              {formLink}
+            </Typography>
+            <Tooltip title={copied ? "Copied!" : "Copy"}>
+              <IconButton
+                onClick={() => {
+                  navigator.clipboard.writeText(formLink);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                size="small"
+              >
+                <ContentCopyIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
         <Button variant="contained" color="warning" sx={{ m: 1 }} onClick={() => navigate("/forms")}>
           Back
         </Button>
@@ -85,8 +117,8 @@ const DetailForm: React.FC = () => {
             <Typography><strong>Slug:</strong> {selectedForm.slug}</Typography>
             <Typography><strong>Description:</strong> {selectedForm.description || "-"}</Typography>
             <Typography><strong>Limit One Response:</strong> {selectedForm.limit_one_response ? "Yes" : "No"}</Typography>
-            <Typography><strong>Allowed Domains:</strong> {selectedForm.allowed_domains.join(", ") || "-"}</Typography>
-          </Box>
+          <Typography><strong>Allowed Domains:</strong> {selectedForm.allowed_domains.join(", ") || "-"}</Typography>
+        </Box>
         )}
         <Box sx={{ width: '100%', typography: 'body1' }}>
            <Tabs
