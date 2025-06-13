@@ -19,19 +19,13 @@ import {
 import { UserData } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
 
-const FormList: React.FC = () => {
+
+
+const QuestionList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, errorMessage } = useSelector((state: RootState) => state.user);
-  const [data, setData] = React.useState<UserData[]>([]);
-
-  useEffect(() => {
-    dispatch(getUseAsync())
-      .unwrap()
-      .then((data) => setData(data))
-      .catch(() => { });
-  }, [dispatch]);
-
+  const { selectedForm } = useSelector((state: RootState) => state.user);
+ console.log(selectedForm?.questions )
   return (
     <>
       <Box display="flex" justifyContent="space-between" mt={2}>
@@ -42,13 +36,13 @@ const FormList: React.FC = () => {
           Add User
         </Button>
       </Box>
-      <TableContainer component={Paper} sx={{ mt: 4 }}>
+      {/* <TableContainer component={Paper} sx={{ mt: 4 }}>
 
         {loading && <CircularProgress sx={{ m: 2 }} />}
 
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
-        {!loading && data.length > 0 && (
+        {!loading && selectedForm.questions.length > 0 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -60,7 +54,7 @@ const FormList: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((form: any) => (
+              {selectedForm.questions.map((form: any) => (
                 <TableRow key={form.id}>
                   <TableCell>{form.name}</TableCell>
                   <TableCell>{form.slug}</TableCell>
@@ -71,6 +65,7 @@ const FormList: React.FC = () => {
                       variant="contained"
                       sx={{ m: 1 }}
                       onClick={() => {
+                        dispatch(setSelectedForm(form));
                         navigate(`/forms/detail/${form.slug}`);
                       }}
                     >
@@ -86,9 +81,9 @@ const FormList: React.FC = () => {
         {!loading && data.length === 0 && (
           <Typography sx={{ m: 2 }}>No forms found.</Typography>
         )}
-      </TableContainer>
+      </TableContainer> */}
     </>
   );
 };
 
-export default FormList;
+export default QuestionList;

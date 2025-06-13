@@ -71,7 +71,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/forms" />} />
             <Route path="/forms" element={<FormList />} />
             <Route path="/forms/new" element={<CreateForm />} />
-            <Route path="/forms/detail" element={<DetailForm />} />
+            <Route path="/forms/detail/:id" element={<DetailForm />} />
           </Routes>
             </>
           )}

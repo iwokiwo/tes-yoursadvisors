@@ -1,3 +1,5 @@
+export const baseUrl = "https://interview.yoursadvisors.co.id"
+
 export const choiceTypes = [
   "short answer",
   "paragraph",
@@ -5,4 +7,6 @@ export const choiceTypes = [
   "multiple choice",
   "dropdown",
   "checkboxes",
-];
+] as const;
+
+export const staticChoices = ["React JS", "Vue JS", "Angular JS", "Svelte"]

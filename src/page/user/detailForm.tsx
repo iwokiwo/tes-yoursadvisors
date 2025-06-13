@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getUseAsync, setSelectedForm } from "../../store/userSlice";
+import { getFormByIdAsync, setSelectedForm } from "../../store/userSlice";
 import {
   Table,
   TableBody,
@@ -19,8 +19,9 @@ import {
   Tab,
 } from "@mui/material";
 import { UserData } from "../../services/userService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AddQuestionForm from "./addQuestionForm";
+import QuestionList from "./questionList";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,9 +52,9 @@ function TabPanel(props: TabPanelProps) {
 
 const DetailForm: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedForm} = useSelector((state: RootState) => state.user);
-  const [data, setData] = React.useState<UserData[]>([]);
+  const { selectedForm, errorCode} = useSelector((state: RootState) => state.user);
   const [value, setValue] = React.useState(0);
 
  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -61,12 +62,15 @@ const DetailForm: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getUseAsync())
-      .unwrap()
-      .then((data) => setData(data))
-      .catch(() => { });
+     if (!id) return;
+
+    dispatch(getFormByIdAsync({ formSlug: id })).unwrap()
+
   }, [dispatch]);
 
+
+  if(errorCode > 200)  navigate("/forms")
+     
   return (
     <>
       <Box display="flex" justifyContent="space-between" mt={2}>
@@ -77,16 +81,29 @@ const DetailForm: React.FC = () => {
           Back
         </Button>
       </Box>
+
+      {selectedForm && (
+          <Box sx={{ p: 2, backgroundColor: "#f9f9f9", borderRadius: 2, mb: 2 }}>
+            <Typography variant="h6" gutterBottom>Form Information</Typography>
+            <Typography><strong>ID:</strong> {selectedForm.id}</Typography>
+            <Typography><strong>Name:</strong> {selectedForm.name}</Typography>
+            <Typography><strong>Slug:</strong> {selectedForm.slug}</Typography>
+            <Typography><strong>Description:</strong> {selectedForm.description || "-"}</Typography>
+            <Typography><strong>Limit One Response:</strong> {selectedForm.limit_one_response ? "Yes" : "No"}</Typography>
+            <Typography><strong>Allowed Domains:</strong> {selectedForm.allowed_domains.join(", ") || "-"}</Typography>
+          </Box>
+        )}
         <Box sx={{ width: '100%', typography: 'body1' }}>
            <Tabs
         value={value}
         onChange={handleChange}
       >
-        <Tab value={0} label="Item One" />
-        <Tab value={1} label="Item Two" />
+        <Tab value={0} label="Question" />
+        <Tab value={1} label="Response" />
       </Tabs>
       <TabPanel value={value} index={0} >
-        <AddQuestionForm formSlug={selectedForm!.slug}/>
+        <AddQuestionForm formSlug={id!}/>
+        <QuestionList/>
       </TabPanel>
       <TabPanel value={value} index={1} >
         Item Two

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseUrl, choiceTypes } from "../constants/form";
 
 export interface CreateUserPayload {
   name: string;
@@ -12,12 +13,43 @@ export interface UserData extends CreateUserPayload {
   id: string;
 }
 
+export interface SelectedFormmData extends CreateUserPayload {
+  id: string;
+  questions: any
+  creator_id: string;
+}
+
+export interface CreateQuestionPayload {
+  name: string;
+  choice_type: (typeof choiceTypes)[number];
+  is_required: boolean;
+  choices?: any;
+}
+
 export const createUserApi = async (
   payload: CreateUserPayload,
   token: string
 ) => {
   const response = await axios.post(
-    "https://interview.yoursadvisors.co.id/api/v1/forms",
+    `${baseUrl}/api/v1/forms`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const createQuestionApi = async (
+  payload: CreateQuestionPayload,
+  token: string,
+  formSlug: string
+) => {
+  const response = await axios.post(
+    `${baseUrl}/api/v1/forms/<form_slug>/questions`,
     payload,
     {
       headers: {
@@ -31,8 +63,8 @@ export const createUserApi = async (
 
 export const getUserApi = async (token: string, id?: string): Promise<UserData[]> => {
     const url = id
-    ? `https://interview.yoursadvisors.co.id/api/v1/forms/${id}`
-    : "https://interview.yoursadvisors.co.id/api/v1/forms";
+    ? `${baseUrl}/api/v1/forms/${id}`
+    : `${baseUrl}/api/v1/forms`;
   const response = await axios.get(
     url,
     {
@@ -42,6 +74,21 @@ export const getUserApi = async (token: string, id?: string): Promise<UserData[]
     }
   );
 
-  return response.data.forms;
+  return id ? response.data.form : response.data.forms;
 };
+
+export const getFormByIdApi = async (token: string, id?: string): Promise<SelectedFormmData> => {
+    const url =`${baseUrl}/api/v1/forms/${id}`
+  const response = await axios.get(
+    url,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data.form;
+};
+
 

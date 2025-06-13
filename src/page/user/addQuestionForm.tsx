@@ -25,18 +25,7 @@ import {
 import { Add, Delete } from "@mui/icons-material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
-// --- Types ---
-const choiceTypes = [
-  "short answer",
-  "paragraph",
-  "date",
-  "multiple choice",
-  "dropdown",
-  "checkboxes",
-] as const;
-
-const staticChoices = ["React JS", "Vue JS", "Angular JS", "Svelte"]
+import { choiceTypes, staticChoices } from "../../constants/form";
 
 type ChoiceType = (typeof choiceTypes)[number];
 
@@ -98,6 +87,13 @@ export default function AddQuestionForm({ formSlug }: { formSlug: string }) {
 
     console.log("Submitting:", payload);
 
+      //  dispatch(
+      //     createUserAsync({
+      //       data
+      //     })
+      //   );
+      //   reset();
+
     // const response = await fetch(`/api/v1/forms/${formSlug}/questions`, {
     //   method: "POST",
     //   headers: {
@@ -153,7 +149,7 @@ export default function AddQuestionForm({ formSlug }: { formSlug: string }) {
           control={<Checkbox {...register("is_required")} />}
           label="Required?"
         />
-        
+
         <Box mt={1}>
           <Typography variant="subtitle1" gutterBottom>
             Choices
