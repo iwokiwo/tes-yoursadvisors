@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { getFormByIdAsync } from "../../store/userSlice";
+import { getFormByIdAsync, getResponsesAsync } from "../../store/userSlice";
 import {
   Typography,
   Button,
@@ -10,7 +10,8 @@ import {
   Tab,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import QuestionList from "./questionList";
+import QuestionList from "../question/questionList";
+import ResponseList from "./responseList";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,6 +57,12 @@ const DetailForm: React.FC = () => {
     dispatch(getFormByIdAsync({ formSlug: id })).unwrap()
   }, [dispatch, successMessage]);
 
+    useEffect(() => {
+     if (!id) return;
+
+    dispatch(getResponsesAsync({ formSlug: id })).unwrap()
+  }, [dispatch, successMessage]);
+
 
   if(errorCode > 200)  navigate("/forms")
      
@@ -93,7 +100,7 @@ const DetailForm: React.FC = () => {
         <QuestionList formSlug={id!}/>
       </TabPanel>
       <TabPanel value={value} index={1} >
-        Item Two
+        <ResponseList formSlug={id!}/>
       </TabPanel>
     </Box>
     </>

@@ -8,18 +8,13 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import AddHabitForm from "./page/add-habit-form";
-import HabitList from "./page/habit-list";
-import HabitStats from "./page/habit-stats";
 import LoginForm from "./page/loginForm";
 import { RootState, AppDispatch } from "./store/store";
 import { logout } from "./store/authSlice";
-import CreateUserForm from "./page/user/CreateForm";
-import UserList from "./page/user/formList";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import DetailForm from "./page/user/detailForm";
-import FormList from "./page/user/formList";
-import CreateForm from "./page/user/CreateForm";
+import DetailForm from "./page/form/detailForm";
+import FormList from "./page/form/formList";
+import CreateForm from "./page/form/CreateForm";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -46,7 +41,7 @@ const App: React.FC = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            User Management
+            Form
           </Typography>
           {isAuthenticated && (
             <Button color="inherit" onClick={() => dispatch(logout())}>
@@ -62,12 +57,7 @@ const App: React.FC = () => {
             <LoginForm />
           ) : (
             <>
-            {/* <CreateUserForm />
-            <UserList /> */}
-              {/* <AddHabitForm />
-              <HabitList />
-              <HabitStats /> */}
-                  <Routes>
+          <Routes>
             <Route path="/" element={<Navigate to="/forms" />} />
             <Route path="/forms" element={<FormList />} />
             <Route path="/forms/new" element={<CreateForm />} />

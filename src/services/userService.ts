@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { formToJSON } from "axios";
 import { baseUrl, choiceTypes } from "../constants/form";
 
 export interface CreateUserPayload {
@@ -27,6 +27,10 @@ export interface CreateQuestionPayload {
    id?: string;
 }
 
+export interface CreateResponsesPayload {
+  answers: any[]
+}
+
 export const createUserApi = async (
   payload: CreateUserPayload,
   token: string
@@ -51,6 +55,24 @@ export const createQuestionApi = async (
 ) => {
   const response = await axios.post(
     `${baseUrl}/api/v1/forms/${formSlug}/questions`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const createResponsesApi = async (
+  payload: CreateResponsesPayload,
+  token: string,
+  formSlug: string
+) => {
+  const response = await axios.post(
+    `${baseUrl}/api/v1/forms/${formSlug}/responses`,
     payload,
     {
       headers: {
@@ -108,6 +130,20 @@ export const getFormByIdApi = async (token: string, id?: string): Promise<Select
   );
 
   return response.data.form;
+};
+
+export const getResponseApi = async (token: string, id?: string): Promise<any> => {
+    const url =`${baseUrl}/api/v1/forms/${id}/responses`
+  const response = await axios.get(
+    url,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 };
 
 

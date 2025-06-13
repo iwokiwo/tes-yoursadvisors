@@ -50,8 +50,7 @@ export default function QuestionList({ formSlug }: { formSlug: string }) {
   return (
     <>
       <Box display="flex" justifyContent="space-between" mt={2}>
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+
         <Typography variant="h6" sx={{ m: 1 }}>
           Question List
         </Typography>
@@ -64,6 +63,7 @@ export default function QuestionList({ formSlug }: { formSlug: string }) {
         {loading && <CircularProgress sx={{ m: 2 }} />}
 
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
 
         {!loading && selectedForm?.questions.length > 0 && (
           <Table>

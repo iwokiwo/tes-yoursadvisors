@@ -39,7 +39,7 @@ const FormList: React.FC = () => {
           Form List
         </Typography>
         <Button variant="contained" sx={{ m: 1 }} onClick={() => navigate("/forms/new")}>
-          Add User
+          Add Form
         </Button>
       </Box>
       <TableContainer component={Paper} sx={{ mt: 4 }}>
