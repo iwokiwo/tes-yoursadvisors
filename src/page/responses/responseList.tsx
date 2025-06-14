@@ -13,14 +13,23 @@ import {
   Alert,
   Button,
   Box,
+  TableCell,
 } from "@mui/material";
 import AddResponse from "./addResponse";
-
-
 
 export default function ResponseList({ formSlug }: { formSlug: string }) {
   const { responses, loading, errorMessage, successMessage } = useSelector((state: RootState) => state.user);
   const [openModal, setOpenModal] = React.useState(false);
+  
+  const questionKeys = React.useMemo(() => {
+    if (!responses || responses.length === 0) return [];
+ 
+    const allKeys = new Set<string>();
+    responses.forEach((res: any) => {
+      Object.keys(res.answers || {}).forEach((key) => allKeys.add(key));
+    });
+    return Array.from(allKeys);
+  }, [responses]);
 
   return (
     <>
@@ -33,8 +42,8 @@ export default function ResponseList({ formSlug }: { formSlug: string }) {
           Add Responses
         </Button>
       </Box>
+      
       <TableContainer component={Paper} sx={{ mt: 4 }}>
-
         {loading && <CircularProgress sx={{ m: 2 }} />}
 
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
@@ -44,11 +53,33 @@ export default function ResponseList({ formSlug }: { formSlug: string }) {
           <Table>
             <TableHead>
               <TableRow>
-
+                <TableCell>User</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Date</TableCell>
+                {questionKeys.map((question) => (
+                  <TableCell key={question}>{question}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
-       
+              {responses.map((response: any, index: any) => (
+                <TableRow key={index}>
+                  <TableCell>{response.user.name}</TableCell>
+                  <TableCell>{response.user.email}</TableCell>
+                  <TableCell>
+                    {new Date(response.date).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </TableCell>
+                  {questionKeys.map((question) => (
+                    <TableCell key={question}>
+                      {response.answers[question] || "-"}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         )}

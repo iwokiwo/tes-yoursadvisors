@@ -105,7 +105,7 @@ export const getResponsesAsync = createAsyncThunk(
     try {
       const token = JSON.parse(localStorage.getItem("user") || "{}").accessToken || "";
       const data = await getResponseApi(token, formSlug);
-      return data;
+      return data.responses;
     } catch (error: any) {
       return rejectWithValue({
         message: "Failed to fetch forms.",
